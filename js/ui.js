@@ -1,4 +1,5 @@
 function render() {
+<<<<<<< HEAD
   if (state.error) {
     showError(state.error);
     return;
@@ -144,3 +145,8 @@ function showError(msg) {
 
 // Attach to window for direct access if needed, though most is handled in events
 window.ui = { render, updateFilterUI, updateNavUI, toggleLoading, showError };
+=======
+  renderStats(state.orders);
+  renderOrders(filteredOrders());
+}
+>>>>>>> 3fe9538 (new file:   db.json)
