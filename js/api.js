@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 const API_BASE = "http://localhost:3000";
 
 async function getOrders() {
@@ -37,3 +38,10 @@ async function getSettings() {
   if (!res.ok) throw new Error("Failed to fetch settings");
   return res.json();
 }
+=======
+fetch('http://localhost:3000/orders', {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify(data)
+})
+>>>>>>> 3fe9538 (new file:   db.json)
