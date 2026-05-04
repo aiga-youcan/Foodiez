@@ -1,6 +1,5 @@
 function render() {
 <<<<<<< HEAD
-<<<<<<< HEAD
   if (state.error) {
     showError(state.error);
     return;
@@ -151,8 +150,3 @@ window.ui = { render, updateFilterUI, updateNavUI, toggleLoading, showError };
   renderOrders(filteredOrders());
 }
 >>>>>>> 3fe9538 (new file:   db.json)
-=======
-  renderStats(state.orders);
-  renderOrders(filteredOrders());
-}
->>>>>>> 2a6db0e (# Please enter the commit message for your changes. Lines starting)
