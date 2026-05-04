@@ -1,0 +1,16 @@
+{
+  "orders": [
+    {
+      "id": 1,
+      "customerName": "Ahmed",
+      "items": ["Pizza", "Soda"],
+      "totalPrice": 120,
+      "status": "pending",
+      "createdAt": "2025-05-04"
+    }
+  ],
+  "settings": {
+    "restaurantName": "Foodiez",
+    "contactEmail": "contact@foodiez.com"
+  }
+}
