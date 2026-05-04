@@ -1,6 +1,7 @@
 const state = {
   orders: [],
-  filter: 'all',
+  settings: { restaurantName: "Foodiez", contactEmail: "" },
+  filter: "all",
   loading: false,
   error: null
 };
