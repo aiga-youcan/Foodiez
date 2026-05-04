@@ -1,4 +1,5 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 const API_BASE = "http://localhost:3000";
 
 async function getOrders() {
@@ -45,3 +46,23 @@ fetch('http://localhost:3000/orders', {
   body: JSON.stringify(data)
 })
 >>>>>>> 3fe9538 (new file:   db.json)
+=======
+fetch("http://localhost:3000/orders", {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify(data),
+});
+
+const URL = "http://localhost:3000";
+//getOrders
+
+async function getOrders() {
+  const reponse = await fetch(`${URL}/orders`);
+  if (!reponse.ok) throw new Error("Erreur");
+  return reponse.json();
+}
+
+//createOrder
+
+async function createOrder(data) {}
+>>>>>>> 2a6db0e (# Please enter the commit message for your changes. Lines starting)
