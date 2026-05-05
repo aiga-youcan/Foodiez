@@ -1,65 +1,75 @@
 {
   "orders": [
     {
-      "id": 1,
+      "id": "1",
       "customerName": "Ahmed",
-      "items": ["Pizza", "Soda"],
+      "items": [
+        "Pizza",
+        "Soda"
+      ],
       "totalPrice": 120,
-      "status": "pending",
+      "status": "rejected",
       "createdAt": "2025-05-01"
     },
     {
-      "id": 2,
+      "id": "2",
       "customerName": "Sara",
-      "items": ["Burger", "Fries"],
+      "items": [
+        "Burger",
+        "Fries"
+      ],
       "totalPrice": 85,
       "status": "accepted",
       "createdAt": "2025-05-02"
     },
     {
-      "id": 3,
+      "id": "3",
       "customerName": "Youssef",
-      "items": ["Pasta", "Water"],
+      "items": [
+        "Pasta",
+        "Water"
+      ],
       "totalPrice": 60,
       "status": "completed",
       "createdAt": "2025-05-03"
     },
     {
-      "id": 4,
+      "id": "4",
       "customerName": "Fatima",
-      "items": ["Salad", "Tea"],
+      "items": [
+        "Salad",
+        "Tea"
+      ],
       "totalPrice": 45,
       "status": "rejected",
       "createdAt": "2025-05-03"
     },
     {
-      "id": 5,
+      "id": "5",
       "customerName": "Omar",
-      "items": ["Pizza", "Burger", "Soda"],
+      "items": [
+        "Pizza",
+        "Burger",
+        "Soda"
+      ],
       "totalPrice": 150,
-      "status": "pending",
+      "status": "completed",
       "createdAt": "2025-05-04"
-    }
-  ],
-  "settings": {
-    "restaurantName": "Foodiez",
-    "contactEmail": "contact@foodiez.com"
-  }
-}
-
-{
-  "orders": [
+    },
     {
-      "id": 1,
-      "customerName": "Ahmed",
-      "items": ["Pizza", "Soda"],
-      "totalPrice": 120,
+      "customerName": "laila",
+      "items": [
+        "pizza"
+      ],
+      "totalPrice": 70,
       "status": "pending",
-      "createdAt": "2025-05-04"
+      "createdAt": "2026-05-04",
+      "id": "8rhyBk9WGxg"
     }
   ],
   "settings": {
     "restaurantName": "Foodiez",
     "contactEmail": "contact@foodiez.com"
-  }
+  },
+  "$schema": "./node_modules/json-server/schema.json"
 }
