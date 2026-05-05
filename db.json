@@ -1,25 +1,14 @@
 {
   "orders": [
     {
-      "id": "1",
-      "customerName": "Ahmed",
-      "items": [
-        "Pizza",
-        "Soda"
-      ],
-      "totalPrice": 120,
-      "status": "rejected",
-      "createdAt": "2025-05-01"
-    },
-    {
       "id": "2",
-      "customerName": "Sara",
+      "customerName": "Lara",
       "items": [
         "Burger",
         "Fries"
       ],
       "totalPrice": 85,
-      "status": "accepted",
+      "status": "completed",
       "createdAt": "2025-05-02"
     },
     {
@@ -31,17 +20,6 @@
       ],
       "totalPrice": 60,
       "status": "completed",
-      "createdAt": "2025-05-03"
-    },
-    {
-      "id": "4",
-      "customerName": "Fatima",
-      "items": [
-        "Salad",
-        "Tea"
-      ],
-      "totalPrice": 45,
-      "status": "rejected",
       "createdAt": "2025-05-03"
     },
     {
@@ -65,6 +43,26 @@
       "status": "pending",
       "createdAt": "2026-05-04",
       "id": "8rhyBk9WGxg"
+    },
+    {
+      "customerName": "lala",
+      "items": [
+        "piza"
+      ],
+      "totalPrice": 20,
+      "status": "pending",
+      "createdAt": "2026-05-05",
+      "id": "jp439Ez3nKE"
+    },
+    {
+      "customerName": "MEHDI",
+      "items": [
+        "SODA"
+      ],
+      "totalPrice": 45,
+      "status": "pending",
+      "createdAt": "2026-05-05",
+      "id": "ICjsVdTrPf8"
     }
   ],
   "settings": {
