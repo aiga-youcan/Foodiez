@@ -1,47 +1,53 @@
-<<<<<<< HEAD
-const API_BASE = "http://localhost:3000";
+const URL = "http://localhost:3000/orders";
 
-async function getOrders() {
-  const res = await fetch(`${API_BASE}/orders`);
-  if (!res.ok) throw new Error("Failed to fetch orders");
-  return res.json();
+// GET
+export async function getOrders() {
+  try {
+    const res = await fetch(URL);
+    return await res.json();
+  } catch (error) {
+    console.log("Error fetching orders:", error);
+  }
+}
+// ADD
+export async function addOrder(order) {
+  try {
+    const res = await fetch(URL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(order)
+    });
+    return await res.json();
+  } catch (error) {
+    console.log("Error adding order:", error);
+  }
 }
 
-async function createOrder(order) {
-  const res = await fetch(`${API_BASE}/orders`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(order)
-  });
-  if (!res.ok) throw new Error("Failed to create order");
-  return res.json();
+// UPDATE
+export async function updateOrder(id, data) {
+  try {
+    const res = await fetch(`${URL}/${id}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(data)
+    });
+    return await res.json();
+  } catch (error) {
+    console.log("Error updating order:", error);
+  }
 }
 
-async function deleteOrder(id) {
-  const res = await fetch(`${API_BASE}/orders/${id}`, { method: "DELETE" });
-  if (!res.ok) throw new Error("Failed to delete order");
-  return res.json();
+// DELETE
+export async function deleteOrder(id) {
+  try {
+    await fetch(`${URL}/${id}`, {
+      method: "DELETE"
+    });
+  } catch (error) {
+    console.log("Error deleting order:", error);
+  }
 }
-
-async function updateOrderStatus(id, status) {
-  const res = await fetch(`${API_BASE}/orders/${id}`, {
-    method: "PATCH",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ status })
-  });
-  if (!res.ok) throw new Error("Failed to update status");
-  return res.json();
-}
-
-async function getSettings() {
-  const res = await fetch(`${API_BASE}/settings`);
-  if (!res.ok) throw new Error("Failed to fetch settings");
-  return res.json();
-}
-=======
-fetch('http://localhost:3000/orders', {
-  method: 'POST',
-  headers: { 'Content-Type': 'application/json' },
-  body: JSON.stringify(data)
-})
->>>>>>> 3fe9538 (new file:   db.json)

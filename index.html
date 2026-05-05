@@ -1,191 +1,317 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-<<<<<<< HEAD
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Foodiez | Restaurant Order Management</title>
-  <meta name="description" content="Manage your restaurant orders in real-time.">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="stylesheet" href="./styles/main.css">
-</head>
-<body class="min-h-screen flex flex-col antialiased">
+<!doctype html>
+<html lang="fr" class="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Foodiez — Gestion des Commandes</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              pending: "#f59e0b",
+              accepted: "#3b82f6",
+              completed: "#10b981",
+              rejected: "#ef4444",
+            },
+          },
+        },
+      };
+    </script>
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+      rel="stylesheet"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="main.css" />
+  </head>
 
-  <!-- Loader Banner -->
-  <div id="global-loader" class="fixed top-0 left-0 right-0 z-50 h-1 hidden">
-    <div class="h-full bg-indigo-500 animate-pulse w-full"></div>
-  </div>
-
-  <!-- Error Banner -->
-  <div id="error-banner" class="fixed top-4 right-4 z-50 hidden fade-in max-w-sm w-full">
-    <div class="bg-rose-500/10 border border-rose-500/30 backdrop-blur-md p-4 rounded-xl shadow-lg shadow-rose-900/20 flex items-start gap-3">
-      <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-rose-400 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-      </svg>
-      <div class="flex-1">
-        <h3 class="text-rose-400 font-semibold mb-1">Error</h3>
-        <p id="error-text" class="text-sm text-slate-300"></p>
-      </div>
-    </div>
-  </div>
-
-  <!-- Navigation -->
-  <nav class="glass-panel sticky top-0 z-40 border-b border-slate-700/50">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="flex items-center justify-between h-16">
-        <div class="flex items-center gap-3">
-          <div class="bg-indigo-600 text-white p-2 rounded-lg">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4" />
-            </svg>
-          </div>
-          <span id="brand-name" class="font-bold text-xl tracking-tight text-white">Foodiez</span>
+  <body
+    class="bg-slate-900 text-slate-100 h-screen overflow-hidden flex font-[Outfit]"
+  >
+    <!-- ===== SIDEBAR ===== -->
+    <aside class="w-64 glass-panel flex flex-col z-20 hidden md:flex shrink-0">
+      <!-- Logo -->
+      <div class="p-6 border-b border-white/10 flex items-center gap-3">
+        <div
+          class="w-10 h-10 bg-orange-500 rounded-xl flex items-center justify-center text-white text-xl shadow-lg shadow-orange-500/30"
+        >
+          <i class="fas fa-hamburger"></i>
         </div>
-        <div class="flex space-x-2">
-          <button data-page="dashboard" class="nav-btn px-4 py-2 rounded-lg text-sm font-medium transition-colors">Dashboard</button>
-          <button data-page="orders" class="nav-btn px-4 py-2 rounded-lg text-sm font-medium transition-colors">Orders</button>
-          <button data-page="form" class="nav-btn px-4 py-2 rounded-lg text-sm font-medium transition-colors">New Order</button>
-        </div>
+        <h1 id="brand-name" class="text-2xl font-bold text-white">Foodiez</h1>
       </div>
-    </div>
-  </nav>
 
-  <!-- Main Content -->
-  <main class="flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">
-    
-    <!-- DASHBOARD -->
-    <section id="page-dashboard" class="page-section fade-in">
-      <div class="mb-8">
-        <h1 class="text-3xl font-bold text-white tracking-tight mb-2">Overview</h1>
-        <p class="text-slate-400">Live statistics of your restaurant's orders.</p>
-      </div>
-      <div id="dashboard-stats" class="grid grid-cols-2 md:grid-cols-5 gap-4">
-        <!-- Stats rendered via JS -->
-      </div>
-    </section>
+      <!-- Nav Links -->
+      <nav class="flex-1 px-4 py-6 space-y-1">
+        <button
+          data-page="dashboard"
+          class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-lg text-left transition-all font-medium text-slate-400 hover:text-white hover:bg-slate-800/30"
+        >
+          <i class="fas fa-chart-pie w-5"></i> Dashboard
+        </button>
+        <button
+          data-page="orders"
+          class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-lg text-left transition-all font-medium text-slate-400 hover:text-white hover:bg-slate-800/30"
+        >
+          <i class="fas fa-list-ul w-5"></i> Commandes
+        </button>
+        <button
+          data-page="new-order"
+          class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-lg text-left transition-all font-medium text-slate-400 hover:text-white hover:bg-slate-800/30"
+        >
+          <i class="fas fa-plus-circle w-5"></i> Nouvelle Commande
+        </button>
+      </nav>
 
-    <!-- ORDERS -->
-    <section id="page-orders" class="page-section hidden fade-in">
-      <div class="flex flex-col md:flex-row md:items-center justify-between mb-8 gap-4">
-        <div>
-          <h1 class="text-3xl font-bold text-white tracking-tight mb-2">Orders Management</h1>
-          <p class="text-slate-400">View and manage all customer orders.</p>
-        </div>
-        <!-- FILTER -->
-        <div class="flex flex-wrap gap-2 p-1 bg-slate-800/50 rounded-lg border border-slate-700/50">
-          <button data-filter="all" class="filter-btn px-4 py-1.5 rounded-md text-sm font-medium border transition-colors">All</button>
-          <button data-filter="pending" class="filter-btn px-4 py-1.5 rounded-md text-sm font-medium border transition-colors">Pending</button>
-          <button data-filter="accepted" class="filter-btn px-4 py-1.5 rounded-md text-sm font-medium border transition-colors">Accepted</button>
-          <button data-filter="completed" class="filter-btn px-4 py-1.5 rounded-md text-sm font-medium border transition-colors">Completed</button>
-          <button data-filter="rejected" class="filter-btn px-4 py-1.5 rounded-md text-sm font-medium border transition-colors">Rejected</button>
-        </div>
+      <!-- Footer -->
+      <div class="p-4 border-t border-white/10">
+        <p id="footer-info" class="text-xs text-slate-500 text-center">
+          Foodiez | contact@foodiez.com
+        </p>
       </div>
-      <div id="orders-list" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        <!-- Orders rendered via JS -->
-      </div>
-    </section>
+    </aside>
 
-    <!-- FORM -->
-    <section id="page-form" class="page-section hidden fade-in max-w-2xl mx-auto">
-      <div class="mb-8 text-center">
-        <h1 class="text-3xl font-bold text-white tracking-tight mb-2">Create New Order</h1>
-        <p class="text-slate-400">Enter customer details to add a new order manually.</p>
-      </div>
-      
-      <form id="order-form" class="glass-panel p-8 rounded-2xl shadow-xl">
-        <div class="space-y-6">
-          <div>
-            <label for="form-name" class="block text-sm font-medium text-slate-300 mb-2">Customer Name</label>
-            <input type="text" id="form-name" required placeholder="e.g. John Doe" class="w-full bg-slate-800/50 border border-slate-600 rounded-lg px-4 py-3 text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all">
-          </div>
-          <div>
-            <label for="form-items" class="block text-sm font-medium text-slate-300 mb-2">Items (Comma separated)</label>
-            <input type="text" id="form-items" required placeholder="e.g. 2x Pizza, 1x Cola" class="w-full bg-slate-800/50 border border-slate-600 rounded-lg px-4 py-3 text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all">
-          </div>
-          <div>
-            <label for="form-price" class="block text-sm font-medium text-slate-300 mb-2">Total Price (MAD)</label>
-            <input type="number" id="form-price" required min="0" step="0.01" placeholder="e.g. 150.00" class="w-full bg-slate-800/50 border border-slate-600 rounded-lg px-4 py-3 text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all">
-          </div>
-          <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-semibold py-3 px-4 rounded-lg shadow-lg shadow-indigo-500/30 transition-all focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-slate-900 mt-4">
-            Submit Order
+    <!-- ===== MAIN ===== -->
+    <main class="flex-1 flex flex-col h-screen overflow-hidden relative">
+      <!-- Mobile Header -->
+      <header
+        class="md:hidden glass-panel border-b border-white/10 p-4 flex justify-between items-center z-10 shrink-0"
+      >
+        <h1 class="text-xl font-bold text-orange-500">
+          <i class="fas fa-hamburger mr-2"></i>Foodiez
+        </h1>
+        <div class="flex gap-1">
+          <button
+            data-page="dashboard"
+            class="nav-btn p-2 text-slate-400 hover:text-white rounded-lg"
+          >
+            <i class="fas fa-chart-pie"></i>
+          </button>
+          <button
+            data-page="orders"
+            class="nav-btn p-2 text-slate-400 hover:text-white rounded-lg"
+          >
+            <i class="fas fa-list-ul"></i>
+          </button>
+          <button
+            data-page="new-order"
+            class="nav-btn p-2 text-slate-400 hover:text-white rounded-lg"
+          >
+            <i class="fas fa-plus-circle"></i>
           </button>
         </div>
-      </form>
-    </section>
+      </header>
 
-  </main>
+      <!-- Global Loader -->
+      <div
+        id="global-loader"
+        class="absolute inset-0 bg-slate-900/80 z-30 flex justify-center items-center hidden backdrop-blur-sm"
+      >
+        <div class="flex flex-col items-center gap-4">
+          <i class="fas fa-circle-notch fa-spin text-5xl text-orange-500"></i>
+          <p class="font-medium text-slate-300">Chargement...</p>
+        </div>
+      </div>
 
-  <!-- Footer -->
-  <footer class="border-t border-slate-800 bg-slate-900/50 py-6 mt-auto">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-      <p id="footer-info" class="text-sm text-slate-500">Foodiez | Loading...</p>
-    </div>
-  </footer>
+      <!-- Error Banner -->
+      <div
+        id="error-banner"
+        class="hidden mx-4 mt-4 p-4 bg-red-500/20 border border-red-500/40 rounded-xl text-red-300 flex items-center gap-3 shrink-0"
+      >
+        <i class="fas fa-exclamation-triangle"></i>
+        <span id="error-text">Erreur de connexion</span>
+        <button
+          onclick="
+            document.getElementById('error-banner').classList.add('hidden')
+          "
+          class="ml-auto text-red-300 hover:text-white"
+        >
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
 
-  <!-- Scripts -->
-  <script src="./js/state.js"></script>
-  <script src="./js/api.js"></script>
-  <script src="./js/ui.js"></script>
-  <script src="./js/events.js"></script>
-  <script src="./js/app.js"></script>
-=======
-  <title>Foodiez Dashboard</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-</head>
+      <!-- App Content -->
+      <div id="app-content" class="flex-1 overflow-y-auto p-4 md:p-8">
+        <!-- ===== PAGE: DASHBOARD ===== -->
+        <section id="page-dashboard" class="page-section hidden fade-in">
+          <div class="mb-8">
+            <p
+              class="text-slate-500 uppercase text-xs font-semibold tracking-widest mb-1"
+            >
+              Vue d'ensemble
+            </p>
+            <h2 class="text-3xl font-bold text-white">Tableau de Bord</h2>
+          </div>
 
-<body class="bg-[#0f0f0f] text-white">
+          <!-- Stats Cards -->
+          <div
+            id="dashboard-stats"
+            class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 mb-8"
+          >
+            <!-- Rendered by JS -->
+          </div>
 
-  <!-- 🔵 NAVBAR -->
-  <nav class="flex justify-between items-center px-8 py-4 border-b border-gray-800">
-    
-    <!-- Logo -->
-    <div class="flex items-center gap-2">
-      <div class="bg-orange-500 p-2 rounded-lg">🍕</div>
-      <h1 class="text-xl font-bold">FOODIEZ</h1>
-    </div>
+          <!-- Recent Orders -->
+          <div class="glass-card rounded-xl p-6">
+            <h3
+              class="text-lg font-semibold text-white mb-4 flex items-center gap-2"
+            >
+              <i class="fas fa-clock text-orange-400"></i> Commandes Récentes
+            </h3>
+            <div id="recent-orders" class="space-y-3">
+              <!-- Rendered by JS -->
+            </div>
+          </div>
+        </section>
 
-    <!-- Menu -->
-    <div class="flex gap-6 text-gray-400">
-      <button class="text-white border-b-2 border-orange-500 pb-1">Dashboard</button>
-      <button class="hover:text-white">Commandes</button>
-      <button class="hover:text-white">+ Nouvelle</button>
-    </div>
+        <!-- ===== PAGE: ORDERS ===== -->
+        <section id="page-orders" class="page-section hidden fade-in">
+          <div class="mb-6">
+            <p
+              class="text-slate-500 uppercase text-xs font-semibold tracking-widest mb-1"
+            >
+              Gestion
+            </p>
+            <h2 class="text-3xl font-bold text-white">Commandes</h2>
+          </div>
 
-    <!-- Status -->
-    <div class="flex items-center gap-2 text-green-400 text-sm">
-      <span class="w-2 h-2 bg-green-400 rounded-full"></span>
-      Serveur actif
-    </div>
+          <!-- Filters -->
+          <div class="flex flex-wrap gap-2 mb-6">
+            <button
+              data-filter="all"
+              class="filter-btn px-4 py-2 rounded-full text-sm font-medium border border-slate-700 bg-slate-800/50 text-slate-400 transition-all hover:text-white"
+            >
+              Toutes
+            </button>
+            <button
+              data-filter="pending"
+              class="filter-btn px-4 py-2 rounded-full text-sm font-medium border border-slate-700 bg-slate-800/50 text-slate-400 transition-all hover:text-white"
+            >
+              En attente
+            </button>
+            <button
+              data-filter="accepted"
+              class="filter-btn px-4 py-2 rounded-full text-sm font-medium border border-slate-700 bg-slate-800/50 text-slate-400 transition-all hover:text-white"
+            >
+              Acceptées
+            </button>
+            <button
+              data-filter="completed"
+              class="filter-btn px-4 py-2 rounded-full text-sm font-medium border border-slate-700 bg-slate-800/50 text-slate-400 transition-all hover:text-white"
+            >
+              Terminées
+            </button>
+            <button
+              data-filter="rejected"
+              class="filter-btn px-4 py-2 rounded-full text-sm font-medium border border-slate-700 bg-slate-800/50 text-slate-400 transition-all hover:text-white"
+            >
+              Rejetées
+            </button>
+          </div>
 
-  </nav>
+          <!-- Orders Grid -->
+          <div
+            id="orders-list"
+            class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4"
+          >
+            <!-- Rendered by JS -->
+          </div>
+        </section>
 
-  <!-- 🔵 CONTENT -->
-  <main class="p-10">
+        <!-- ===== PAGE: NEW ORDER ===== -->
+        <section id="page-new-order" class="page-section hidden fade-in">
+          <div class="mb-6">
+            <p
+              class="text-slate-500 uppercase text-xs font-semibold tracking-widest mb-1"
+            >
+              Créer
+            </p>
+            <h2 class="text-3xl font-bold text-white">Nouvelle Commande</h2>
+          </div>
 
-    <!-- Title -->
-    <div class="mb-10">
-      <p class="text-gray-500 uppercase text-sm">Vue d'ensemble</p>
-      <h2 class="text-4xl font-bold tracking-wide">TABLEAU DE BORD</h2>
-    </div>
+          <div class="max-w-lg">
+            <div class="glass-card rounded-xl p-6">
+              <form id="order-form" class="space-y-5">
+                <div>
+                  <label class="block text-sm font-medium text-slate-300 mb-2"
+                    >Nom du client</label
+                  >
+                  <input
+                    type="text"
+                    id="form-name"
+                    required
+                    placeholder="ex: Ahmed"
+                    class="w-full p-3 rounded-lg bg-slate-800 border border-slate-700 focus:ring-2 focus:ring-orange-500 focus:border-orange-500 outline-none transition text-white placeholder-slate-500"
+                  />
+                </div>
+                <div>
+                  <label class="block text-sm font-medium text-slate-300 mb-2"
+                    >Items
+                    <span class="text-slate-500 text-xs"
+                      >(séparés par virgule)</span
+                    ></label
+                  >
+                  <input
+                    type="text"
+                    id="form-items"
+                    required
+                    placeholder="ex: Pizza, Soda, Burger"
+                    class="w-full p-3 rounded-lg bg-slate-800 border border-slate-700 focus:ring-2 focus:ring-orange-500 focus:border-orange-500 outline-none transition text-white placeholder-slate-500"
+                  />
+                </div>
+                <div>
+                  <label class="block text-sm font-medium text-slate-300 mb-2"
+                    >Prix total (MAD)</label
+                  >
+                  <input
+                    type="number"
+                    id="form-price"
+                    required
+                    min="1"
+                    placeholder="ex: 120"
+                    class="w-full p-3 rounded-lg bg-slate-800 border border-slate-700 focus:ring-2 focus:ring-orange-500 focus:border-orange-500 outline-none transition text-white placeholder-slate-500"
+                  />
+                </div>
+                <div class="flex gap-3 pt-2">
+                  <button
+                    type="submit"
+                    class="flex-1 bg-orange-500 hover:bg-orange-600 text-white font-bold py-3 px-6 rounded-lg transition flex justify-center items-center gap-2"
+                  >
+                    <i class="fas fa-plus-circle"></i> Ajouter
+                  </button>
+                  <button
+                    type="reset"
+                    class="px-6 py-3 rounded-lg border border-slate-700 text-slate-400 hover:text-white hover:border-slate-500 transition font-medium"
+                  >
+                    Reset
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </section>
+      </div>
+      <!-- end app-content -->
+    </main>
 
-    <!-- ERROR STATE -->
-    <div id="errorBox" class="flex flex-col items-center justify-center mt-20">
+    <!-- Toast Container -->
+    <div
+      id="toast-container"
+      class="fixed bottom-5 right-5 flex flex-col gap-2 z-50"
+    ></div>
 
-      <!-- Icon -->
-      <div class="text-yellow-400 text-6xl mb-4">⚠️</div>
-
-      <!-- Message -->
-      <p class="text-gray-400 text-lg text-center">
-        Erreur — JSON Server introuvable sur le port 3000.
-      </p>
-
-    </div>
-
-  </main>
-
->>>>>>> 3fe9538 (new file:   db.json)
-</body>
+    <!-- Scripts — ordre important -->
+    <script src="state.js"></script>
+    <script src="utils.js"></script>
+    <script src="api.js"></script>
+    <script src="ui.js"></script>
+    <script src="events.js"></script>
+    <script src="app.js"></script>
+  </body>
 </html>
