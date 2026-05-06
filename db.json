@@ -1,0 +1,73 @@
+{
+  "orders": [
+    {
+      "id": "2",
+      "customerName": "Laila",
+      "items": [
+        "Pasta",
+        "Salade"
+      ],
+      "total": 95,
+      "status": "delivered",
+      "createdAt": "2026-05-02"
+    },
+    {
+      "id": "3",
+      "customerName": "Omar",
+      "items": [
+        "Pizza",
+        "Soda"
+      ],
+      "total": 110,
+      "status": "cancelled",
+      "createdAt": "2026-05-03"
+    },
+    {
+      "customerName": "tesr",
+      "items": [
+        "piza"
+      ],
+      "total": 11,
+      "status": "pending",
+      "createdAt": "2026-05-05",
+      "id": "whCkvMy5NAA"
+    },
+    {
+      "customerName": "tesr",
+      "items": [
+        "piza"
+      ],
+      "total": 11,
+      "status": "pending",
+      "createdAt": "2026-05-05",
+      "id": "5ai-E-zxo2Y"
+    }
+  ],
+  "products": [
+    {
+      "id": "1",
+      "name": "Burger Classic",
+      "price": 55,
+      "image": "https://source.unsplash.com/400x300/?burger&sig=1"
+    },
+    {
+      "id": "2",
+      "name": "Pizza Margherita",
+      "price": 75,
+      "image": "https://source.unsplash.com/400x300/?pizza&sig=2"
+    },
+    {
+      "id": "3",
+      "name": "Salade Fraîche",
+      "price": 40,
+      "image": "https://source.unsplash.com/400x300/?salad&sig=3"
+    },
+    {
+      "id": "4",
+      "name": "Wrap Poulet",
+      "price": 45,
+      "image": "https://source.unsplash.com/400x300/?wrap&sig=4"
+    }
+  ],
+  "$schema": "./node_modules/json-server/schema.json"
+}
