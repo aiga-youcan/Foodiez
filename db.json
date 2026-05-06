@@ -2,72 +2,72 @@
   "orders": [
     {
       "id": "2",
-      "customerName": "Lara",
+      "customerName": "Laila",
       "items": [
-        "Burger",
-        "Fries"
+        "Pasta",
+        "Salade"
       ],
-      "totalPrice": 85,
-      "status": "completed",
-      "createdAt": "2025-05-02"
+      "total": 95,
+      "status": "delivered",
+      "createdAt": "2026-05-02"
     },
     {
       "id": "3",
-      "customerName": "Youssef",
-      "items": [
-        "Pasta",
-        "Water"
-      ],
-      "totalPrice": 60,
-      "status": "completed",
-      "createdAt": "2025-05-03"
-    },
-    {
-      "id": "5",
       "customerName": "Omar",
       "items": [
         "Pizza",
-        "Burger",
         "Soda"
       ],
-      "totalPrice": 150,
-      "status": "completed",
-      "createdAt": "2025-05-04"
+      "total": 110,
+      "status": "cancelled",
+      "createdAt": "2026-05-03"
     },
     {
-      "customerName": "laila",
-      "items": [
-        "pizza"
-      ],
-      "totalPrice": 70,
-      "status": "pending",
-      "createdAt": "2026-05-04",
-      "id": "8rhyBk9WGxg"
-    },
-    {
-      "customerName": "lala",
+      "customerName": "tesr",
       "items": [
         "piza"
       ],
-      "totalPrice": 20,
+      "total": 11,
       "status": "pending",
       "createdAt": "2026-05-05",
-      "id": "jp439Ez3nKE"
+      "id": "whCkvMy5NAA"
     },
     {
-      "customerName": "MEHDI",
+      "customerName": "tesr",
       "items": [
-        "SODA"
+        "piza"
       ],
-      "totalPrice": 45,
+      "total": 11,
       "status": "pending",
       "createdAt": "2026-05-05",
-      "id": "ICjsVdTrPf8"
+      "id": "5ai-E-zxo2Y"
     }
   ],
-  "settings": {
-    "restaurantName": "Foodiez",
-    "contactEmail": "contact@foodiez.com"
-  },
+  "products": [
+    {
+      "id": "1",
+      "name": "Burger Classic",
+      "price": 55,
+      "image": "https://source.unsplash.com/400x300/?burger&sig=1"
+    },
+    {
+      "id": "2",
+      "name": "Pizza Margherita",
+      "price": 75,
+      "image": "https://source.unsplash.com/400x300/?pizza&sig=2"
+    },
+    {
+      "id": "3",
+      "name": "Salade Fraîche",
+      "price": 40,
+      "image": "https://source.unsplash.com/400x300/?salad&sig=3"
+    },
+    {
+      "id": "4",
+      "name": "Wrap Poulet",
+      "price": 45,
+      "image": "https://source.unsplash.com/400x300/?wrap&sig=4"
+    }
+  ],
   "$schema": "./node_modules/json-server/schema.json"
 }

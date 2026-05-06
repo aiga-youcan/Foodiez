@@ -1,35 +1,24 @@
 <!doctype html>
-<html lang="fr" class="dark">
+<html lang="fr">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Foodiez SPA - Dashboard SaaS</title>
+    <title>Foodiez Admin - Dashboard</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-      tailwind.config = {
-        darkMode: "class",
-        theme: {
-          extend: {
-            colors: {
-              pending: "#f59e0b", // Amber
-              accepted: "#3b82f6", // Blue
-              completed: "#10b981", // Green
-              rejected: "#ef4444", // Red
-            },
-          },
-        },
-      };
-    </script>
+    <link rel="shortcut icon" href="icon logo.png" type="image/png" />
     <link
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
       rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+      integrity="sha512-s4Yj2Z5pIH9JxQbpWRnOY6Z4nJ0GCHaRk1WTtF1x4eg6xPr7I/SgV2Iqzv6CJ7XA+jdPSdAKc+D6XkPq7X4BWg=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
     />
     <style>
-      /* Animation fluide de transition entre les pages */
-      .view-transition {
-        animation: fadeIn 0.3s ease-in-out;
-      }
-      @keyframes fadeIn {
+      @keyframes slideIn {
         from {
           opacity: 0;
           transform: translateY(10px);
@@ -39,107 +28,103 @@
           transform: translateY(0);
         }
       }
-      /* Cacher la scrollbar pour un look plus clean */
-      ::-webkit-scrollbar {
-        width: 6px;
+      .fade-in {
+        animation: slideIn 0.3s ease-out;
       }
-      ::-webkit-scrollbar-track {
-        background: transparent;
-      }
-      ::-webkit-scrollbar-thumb {
-        background: #cbd5e1;
-        border-radius: 10px;
-      }
-      .dark ::-webkit-scrollbar-thumb {
-        background: #475569;
+      .btn-active {
+        background-color: #f97316;
+        color: white;
+        box-shadow:
+          0 10px 15px -3px rgba(249, 115, 22, 0.3),
+          0 4px 6px -4px rgba(249, 115, 22, 0.4);
       }
     </style>
   </head>
-  <body
-    class="bg-gray-50 dark:bg-gray-900 text-gray-800 dark:text-gray-100 transition-colors duration-300 font-sans h-screen overflow-hidden flex"
-  >
-    <aside
-      class="w-64 bg-white dark:bg-gray-800 shadow-xl z-20 flex flex-col hidden md:flex"
-    >
-      <div
-        class="p-6 border-b border-gray-100 dark:border-gray-700 flex items-center gap-3"
-      >
-        <div
-          class="w-10 h-10 bg-orange-500 rounded-xl flex items-center justify-center text-white text-xl shadow-lg shadow-orange-500/30"
-        >
-          <i class="fas fa-hamburger"></i>
+  <body class="bg-gray-100 text-gray-800">
+    <div class="flex h-screen">
+      <!-- SIDEBAR -->
+      <aside class="w-64 bg-white shadow-lg border-r border-gray-200">
+        <!-- LOGO -->
+        <div class="p-6 border-b border-gray-200">
+          <!-- clickable logo -->
+          <a
+            href=""
+            onclick="location.reload()"
+            class="flex items-center gap-3 group"
+          >
+            <!-- image logo -->
+            <img
+              src="logo.png"
+              alt="Foodiez Logo"
+              class="w-12 h-12 object-cover rounded-xl shadow-md group-hover:scale-105 transition"
+            />
+
+            <!-- text -->
+            <div>
+              <h1
+                class="text-lg font-bold text-gray-800 group-hover:text-orange-500 transition"
+              >
+                Foodiez
+              </h1>
+              <p class="text-xs text-gray-500">Admin Panel</p>
+            </div>
+          </a>
         </div>
-        <h1 class="text-2xl font-bold text-gray-800 dark:text-white">
-          Foodiez
-        </h1>
-      </div>
 
-      <nav class="flex-1 px-4 py-6 space-y-2">
-        <button
-          onclick="navigate('dashboard')"
-          id="nav-dashboard"
-          class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-lg text-left transition-all hover:bg-gray-100 dark:hover:bg-gray-700 font-medium"
-        >
-          <i class="fas fa-chart-pie w-5"></i> Dashboard
-        </button>
-        <button
-          onclick="navigate('orders')"
-          id="nav-orders"
-          class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-lg text-left transition-all hover:bg-gray-100 dark:hover:bg-gray-700 font-medium"
-        >
-          <i class="fas fa-list-ul w-5"></i> Commandes
-        </button>
-        <button
-          onclick="navigate('settings')"
-          id="nav-settings"
-          class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-lg text-left transition-all hover:bg-gray-100 dark:hover:bg-gray-700 font-medium"
-        >
-          <i class="fas fa-cog w-5"></i> Paramètres
-        </button>
-      </nav>
-    </aside>
+        <!-- NAV MENU -->
+        <nav class="p-4 space-y-1">
+          <button
+            data-page="dashboard"
+            class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-lg text-gray-700 hover:bg-orange-50 transition font-medium"
+          >
+            <i class="fas fa-chart-pie w-5 text-orange-500"></i> Dashboard
+          </button>
+          <button
+            data-page="orders"
+            class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-lg text-gray-700 hover:bg-orange-50 transition font-medium"
+          >
+            <i class="fas fa-receipt w-5 text-orange-500"></i> Orders
+          </button>
+          <button
+            data-page="menu"
+            class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-lg text-gray-700 hover:bg-orange-50 transition font-medium"
+          >
+            <i class="fas fa-utensils w-5 text-orange-500"></i> Menu
+          </button>
+          <button
+            data-page="stats"
+            class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-lg text-gray-700 hover:bg-orange-50 transition font-medium"
+          >
+            <i class="fas fa-chart-bar w-5 text-orange-500"></i> Stats
+          </button>
+        </nav>
+      </aside>
 
-    <main class="flex-1 flex flex-col h-screen overflow-hidden relative">
-      <header
-        class="md:hidden bg-white dark:bg-gray-800 shadow p-4 flex justify-between items-center z-10"
-      >
-        <h1 class="text-xl font-bold text-orange-500">
-          <i class="fas fa-hamburger mr-2"></i>Foodiez
-        </h1>
-        <div class="flex gap-2">
-          <button onclick="navigate('dashboard')" class="p-2 text-gray-500">
-            <i class="fas fa-chart-pie"></i>
-          </button>
-          <button onclick="navigate('orders')" class="p-2 text-gray-500">
-            <i class="fas fa-list-ul"></i>
-          </button>
-          <button onclick="navigate('settings')" class="p-2 text-gray-500">
-            <i class="fas fa-cog"></i>
-          </button>
+      <!-- MAIN -->
+      <main class="flex-1 overflow-auto flex flex-col">
+        <!-- HEADER -->
+        <header class="bg-white shadow-sm border-b border-gray-200">
+          <div class="p-6">
+            <h2 id="page-title" class="text-2xl font-bold text-gray-800">
+              Dashboard
+            </h2>
+            <p id="page-desc" class="text-sm text-gray-500 mt-1">
+              Gérez votre restaurant en temps réel
+            </p>
+          </div>
+        </header>
+
+        <!-- CONTENT -->
+        <div id="app" class="p-6 flex-1 overflow-auto fade-in space-y-6">
+          <!-- Rendu ici -->
         </div>
-      </header>
+      </main>
+    </div>
 
-      <div
-        id="global-loader"
-        class="absolute inset-0 bg-white/80 dark:bg-gray-900/80 z-30 flex justify-center items-center hidden backdrop-blur-sm transition-opacity"
-      >
-        <div class="flex flex-col items-center">
-          <i
-            class="fas fa-circle-notch fa-spin text-5xl text-orange-500 mb-4"
-          ></i>
-          <p class="font-medium">Chargement des données...</p>
-        </div>
-      </div>
-
-      <div
-        id="app-content"
-        class="flex-1 overflow-y-auto p-4 md:p-8 view-transition"
-      ></div>
-    </main>
-
+    <!-- TOASTS -->
     <div
       id="toast-container"
-      class="fixed bottom-5 right-5 flex flex-col gap-2 z-50"
+      class="fixed bottom-5 right-5 space-y-3 z-50"
     ></div>
 
     <script src="script.js"></script>

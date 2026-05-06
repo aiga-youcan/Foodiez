@@ -1,396 +1,355 @@
-// ==========================================
-// 1. ÉTAT GLOBAL (STATE) & CONFIG
-// ==========================================
-const API_URL = 'http://localhost:3000/orders';
-let orders = []; // Stocke toutes les commandes
-let currentView = 'dashboard'; // Vue par défaut
-
-// Récupération des préférences depuis le LocalStorage
-let currentFilter = localStorage.getItem('foodiez_filter') || 'all';
-let isDarkMode = localStorage.getItem('foodiez_theme') === 'dark' || !localStorage.getItem('foodiez_theme'); // Dark par défaut
-
-// ==========================================
-// 2. INITIALISATION & ROUTING (SPA)
-// ==========================================
-document.addEventListener('DOMContentLoaded', () => {
-    applyTheme();
-    fetchOrders(); // Charge les données puis affiche la vue par défaut
-});
-
-/**
- * Moteur de navigation de la SPA
- * Change la vue active et met à jour l'UI
- */
-function navigate(view) {
-    currentView = view;
-    
-    // 1. Mise à jour de l'UI de la Sidebar
-    document.querySelectorAll('.nav-btn').forEach(btn => {
-        btn.classList.remove('bg-orange-50', 'text-orange-600', 'dark:bg-orange-500/20', 'dark:text-orange-400');
-        if (btn.id === `nav-${view}`) {
-            btn.classList.add('bg-orange-50', 'text-orange-600', 'dark:bg-orange-500/20', 'dark:text-orange-400');
-        }
-    });
-
-    // 2. Déclenchement de l'animation
-    const appContent = document.getElementById('app-content');
-    appContent.classList.remove('view-transition');
-    void appContent.offsetWidth; // Force le reflow pour relancer l'animation CSS
-    appContent.classList.add('view-transition');
-
-    // 3. Rendu dynamique de la vue
-    if (view === 'dashboard') renderDashboard();
-    else if (view === 'orders') renderOrders();
-    else if (view === 'settings') renderSettings();
-}
-
-// ==========================================
-// 3. VUES DYNAMIQUES (RENDERS)
-// ==========================================
-
+// ========== DASHBOARD ==========
 function renderDashboard() {
-    const appContent = document.getElementById('app-content');
-    
-    // Calcul des statistiques dynamiques
-    const stats = {
-        total: orders.length,
-        pending: orders.filter(o => o.status === 'pending').length,
-        accepted: orders.filter(o => o.status === 'accepted').length,
-        completed: orders.filter(o => o.status === 'completed').length,
-        rejected: orders.filter(o => o.status === 'rejected').length
-    };
+  const app = document.getElementById("app");
+  const totalOrders = orders.length;
+  const totalRevenue = orders.reduce((sum, o) => sum + (o.total || 0), 0);
+  const deliveredCount = orders.filter((o) => o.status === "delivered").length;
 
-    appContent.innerHTML = `
-        <h2 class="text-3xl font-bold mb-8">Vue d'ensemble</h2>
-        
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            <div class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 flex flex-col justify-between">
-                <div class="flex justify-between items-center mb-4">
-                    <h3 class="text-gray-500 dark:text-gray-400 font-medium">Total Commandes</h3>
-                    <div class="w-10 h-10 rounded-full bg-gray-100 dark:bg-gray-700 flex items-center justify-center text-gray-600 dark:text-gray-300"><i class="fas fa-receipt"></i></div>
-                </div>
-                <p class="text-4xl font-bold">${stats.total}</p>
-            </div>
-            
-            <div class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700">
-                <div class="flex justify-between items-center mb-4">
-                    <h3 class="text-yellow-600 dark:text-yellow-500 font-medium">En Attente</h3>
-                    <div class="w-10 h-10 rounded-full bg-yellow-100 dark:bg-yellow-900/30 flex items-center justify-center text-yellow-600"><i class="fas fa-clock"></i></div>
-                </div>
-                <p class="text-4xl font-bold text-yellow-600 dark:text-yellow-500">${stats.pending}</p>
-            </div>
-
-            <div class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700">
-                <div class="flex justify-between items-center mb-4">
-                    <h3 class="text-blue-600 dark:text-blue-500 font-medium">Acceptées</h3>
-                    <div class="w-10 h-10 rounded-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center text-blue-600"><i class="fas fa-fire-burner"></i></div>
-                </div>
-                <p class="text-4xl font-bold text-blue-600 dark:text-blue-500">${stats.accepted}</p>
-            </div>
-
-            <div class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700">
-                <div class="flex justify-between items-center mb-4">
-                    <h3 class="text-green-600 dark:text-green-500 font-medium">Terminées</h3>
-                    <div class="w-10 h-10 rounded-full bg-green-100 dark:bg-green-900/30 flex items-center justify-center text-green-600"><i class="fas fa-check-double"></i></div>
-                </div>
-                <p class="text-4xl font-bold text-green-600 dark:text-green-500">${stats.completed}</p>
-            </div>
+  app.innerHTML = `
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div class="bg-white p-6 rounded-lg shadow-md border-l-4 border-orange-500">
+        <div class="flex justify-between items-start">
+          <div>
+            <p class="text-gray-600 text-sm font-medium">Total commandes</p>
+            <p class="text-3xl font-bold text-gray-800 mt-2">${totalOrders}</p>
+          </div>
+          <div class="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center">
+            <i class="fas fa-receipt text-orange-500 text-lg"></i>
+          </div>
         </div>
-
-        <div class="mt-8 bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700">
-            <h3 class="text-lg font-bold mb-4">Activité Récente</h3>
-            <div class="h-48 flex items-end gap-2" id="fake-chart">
-                ${generateFakeChartBars()}
-            </div>
+      </div>
+      <div class="bg-white p-6 rounded-lg shadow-md border-l-4 border-green-500">
+        <div class="flex justify-between items-start">
+          <div>
+            <p class="text-gray-600 text-sm font-medium">Revenus totaux</p>
+            <p class="text-3xl font-bold text-gray-800 mt-2">${formatCurrency(totalRevenue)}</p>
+          </div>
+          <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
+            <i class="fas fa-wallet text-green-500 text-lg"></i>
+          </div>
         </div>
-    `;
+      </div>
+      <div class="bg-white p-6 rounded-lg shadow-md border-l-4 border-blue-500">
+        <div class="flex justify-between items-start">
+          <div>
+            <p class="text-gray-600 text-sm font-medium">Commandes livrées</p>
+            <p class="text-3xl font-bold text-gray-800 mt-2">${deliveredCount}</p>
+          </div>
+          <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
+            <i class="fas fa-truck text-blue-500 text-lg"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="bg-white p-6 rounded-lg shadow-md">
+      <h3 class="text-lg font-bold text-gray-800 mb-4">Dernières commandes créées</h3>
+      ${
+        orders.length > 0
+          ? `
+        <div class="overflow-x-auto">
+          <table class="w-full text-sm">
+            <thead class="bg-gray-50 border-b border-gray-200">
+              <tr>
+                <th class="px-4 py-3 text-left text-gray-600 font-medium">Client</th>
+                <th class="px-4 py-3 text-left text-gray-600 font-medium">Articles</th>
+                <th class="px-4 py-3 text-left text-gray-600 font-medium">Total</th>
+                <th class="px-4 py-3 text-left text-gray-600 font-medium">Statut</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${orders
+                .slice(-5)
+                .reverse()
+                .map(
+                  (order) => `
+                <tr class="border-b border-gray-200 hover:bg-gray-50">
+                  <td class="px-4 py-3 text-gray-800">${order.customerName || order.client || "Inconnu"}</td>
+                  <td class="px-4 py-3 text-gray-700">${(order.items || []).join(", ")}</td>
+                  <td class="px-4 py-3 font-semibold text-gray-800">${formatCurrency(order.total)}</td>
+                  <td class="px-4 py-3">
+                    <span class="inline-flex px-3 py-1 rounded-full text-xs font-semibold ${getStatusBadge(order.status)} capitalize">
+                      ${order.status}
+                    </span>
+                  </td>
+                </tr>
+              `,
+                )
+                .join("")}
+            </tbody>
+          </table>
+        </div>
+      `
+          : '<p class="text-gray-500 text-center py-8">Aucune commande</p>'
+      }
+    </div>
+  `;
 }
 
 function renderOrders() {
-    const appContent = document.getElementById('app-content');
-    
-    // Application du filtre sur l'état global
-    const filteredOrders = currentFilter === 'all' 
-        ? orders 
-        : orders.filter(o => o.status === currentFilter);
+  const app = document.getElementById("app");
+  const filteredOrders = getFilteredOrders();
 
-    // Injection du HTML (Formulaire + Filtres + Liste)
-    // On utilise onsubmit="return handleAddOrder(event)" pour intercepter la soumission
-    appContent.innerHTML = `
-        <div class="flex flex-col lg:flex-row justify-between items-start gap-8">
-            <div class="w-full lg:w-1/3 bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 sticky top-4">
-                <h2 class="text-xl font-bold mb-6"><i class="fas fa-plus-circle mr-2 text-orange-500"></i>Nouvelle Commande</h2>
-                <form onsubmit="return handleAddOrder(event)" class="space-y-4">
-                    <div>
-                        <label class="block text-sm font-medium mb-1 text-gray-600 dark:text-gray-300">Client</label>
-                        <input type="text" id="input-client" required class="w-full p-3 rounded-lg bg-gray-50 dark:bg-gray-700/50 border border-gray-200 dark:border-gray-600 focus:ring-2 focus:ring-orange-500 outline-none transition">
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium mb-1 text-gray-600 dark:text-gray-300">Plat</label>
-                        <input type="text" id="input-meal" required class="w-full p-3 rounded-lg bg-gray-50 dark:bg-gray-700/50 border border-gray-200 dark:border-gray-600 focus:ring-2 focus:ring-orange-500 outline-none transition">
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium mb-1 text-gray-600 dark:text-gray-300">Prix (DH)</label>
-                        <input type="number" id="input-price" min="1" required class="w-full p-3 rounded-lg bg-gray-50 dark:bg-gray-700/50 border border-gray-200 dark:border-gray-600 focus:ring-2 focus:ring-orange-500 outline-none transition">
-                    </div>
-                    <button type="submit" class="w-full bg-orange-500 hover:bg-orange-600 text-white font-bold py-3 px-4 rounded-lg transition mt-4 shadow-lg shadow-orange-500/30">
-                        Ajouter
-                    </button>
-                </form>
+  app.innerHTML = `
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div class="lg:col-span-1">
+        <div class="bg-white p-6 rounded-lg shadow-md sticky top-6">
+          <h3 class="text-lg font-bold text-gray-800 mb-4">Créer une commande</h3>
+          <form id="add-order-form" class="space-y-4">
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">Client</label>
+              <input type="text" id="order-client" required class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500" placeholder="Nom du client">
             </div>
-
-            <div class="w-full lg:w-2/3">
-                <div class="flex flex-wrap gap-2 mb-6">
-                    ${['all', 'pending', 'accepted', 'completed', 'rejected'].map(status => `
-                        <button onclick="setFilter('${status}')" class="px-4 py-2 rounded-full text-sm font-medium transition capitalize ${
-                            currentFilter === status 
-                            ? 'bg-orange-500 text-white shadow-md' 
-                            : 'bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-700'
-                        }">
-                            ${status === 'all' ? 'Toutes' : status}
-                        </button>
-                    `).join('')}
-                </div>
-
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    ${filteredOrders.length > 0 ? filteredOrders.map(order => generateOrderCard(order)).join('') : `
-                        <div class="col-span-full text-center py-12 bg-white dark:bg-gray-800 rounded-2xl border border-dashed border-gray-300 dark:border-gray-600">
-                            <i class="fas fa-inbox text-4xl text-gray-400 mb-3"></i>
-                            <p class="text-gray-500">Aucune commande trouvée.</p>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">Articles</label>
+              <input type="text" id="order-items" placeholder="Ex: Burger, Pizza" required class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500">
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">Total (DH)</label>
+              <input type="number" id="order-total" min="1" required class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500">
+            </div>
+            <button type="submit" class="w-full bg-orange-500 hover:bg-orange-600 text-white font-medium py-2 rounded-lg transition">
+              <i class="fas fa-plus mr-2"></i>Ajouter
+            </button>
+          </form>
+        </div>
+      </div>
+      <div class="lg:col-span-2">
+        <div class="bg-white p-6 rounded-lg shadow-md">
+          <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
+            <div>
+              <h3 class="text-lg font-bold text-gray-800">Commandes (${orders.length})</h3>
+              <p class="text-sm text-gray-500">Gérez vos commandes en attente, livrées ou annulées.</p>
+            </div>
+            <div class="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
+              <input id="order-search" type="search" placeholder="Rechercher client ou article" value="${orderSearch}" class="w-full sm:w-72 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500">
+              <select id="order-filter" class="px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500">
+                <option value="all" ${orderFilter === "all" ? "selected" : ""}>Tous les statuts</option>
+                <option value="pending" ${orderFilter === "pending" ? "selected" : ""}>Pending</option>
+                <option value="delivered" ${orderFilter === "delivered" ? "selected" : ""}>Delivered</option>
+                <option value="cancelled" ${orderFilter === "cancelled" ? "selected" : ""}>Cancelled</option>
+              </select>
+            </div>
+          </div>
+          ${
+            filteredOrders.length > 0
+              ? `
+            <div class="overflow-x-auto">
+              <table class="w-full text-sm">
+                <thead class="bg-gray-50 border-b border-gray-200">
+                  <tr>
+                    <th class="px-4 py-3 text-left text-gray-600 font-medium">Client</th>
+                    <th class="px-4 py-3 text-left text-gray-600 font-medium">Articles</th>
+                    <th class="px-4 py-3 text-left text-gray-600 font-medium">Total</th>
+                    <th class="px-4 py-3 text-left text-gray-600 font-medium">Statut</th>
+                    <th class="px-4 py-3 text-left text-gray-600 font-medium">Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  ${filteredOrders
+                    .map(
+                      (order) => `
+                    <tr class="border-b border-gray-200 hover:bg-gray-50">
+                      <td class="px-4 py-3 text-gray-800">${order.customerName || order.client || "Inconnu"}</td>
+                      <td class="px-4 py-3 text-gray-700">${(order.items || []).join(", ")}</td>
+                      <td class="px-4 py-3 font-semibold text-gray-800">${formatCurrency(order.total)}</td>
+                      <td class="px-4 py-3">
+                        <span class="inline-flex px-3 py-1 rounded-full text-xs font-semibold ${getStatusBadge(order.status)} capitalize">
+                          ${order.status}
+                        </span>
+                      </td>
+                      <td class="px-4 py-3">
+                        <div class="flex flex-wrap gap-2">
+                          <button onclick="updateOrderStatus(${order.id}, 'pending')" class="px-3 py-1 rounded-lg border border-gray-200 bg-white text-gray-700 hover:bg-gray-50 text-xs">Pending</button>
+                          <button onclick="updateOrderStatus(${order.id}, 'delivered')" class="px-3 py-1 rounded-lg border border-gray-200 bg-white text-gray-700 hover:bg-gray-50 text-xs">Delivered</button>
+                          <button onclick="updateOrderStatus(${order.id}, 'cancelled')" class="px-3 py-1 rounded-lg border border-gray-200 bg-white text-gray-700 hover:bg-gray-50 text-xs">Cancelled</button>
+                          <button onclick="deleteOrder(${order.id})" class="px-3 py-1 rounded-lg bg-gray-100 text-gray-700 hover:bg-gray-200 text-xs flex items-center gap-2">
+                            <i class="fas fa-trash"></i>Supprimer
+                          </button>
                         </div>
-                    `}
-                </div>
+                      </td>
+                    </tr>
+                  `,
+                    )
+                    .join("")}
+                </tbody>
+              </table>
             </div>
+          `
+              : '<p class="text-gray-500 text-center py-8">Aucune commande</p>'
+          }
         </div>
-    `;
+      </div>
+    </div>
+  `;
+
+  document
+    .getElementById("add-order-form")
+    .addEventListener("submit", handleAddOrder);
+  document.getElementById("order-search").addEventListener("input", (e) => {
+    orderSearch = e.target.value;
+    renderOrders();
+  });
+  document.getElementById("order-filter").addEventListener("change", (e) => {
+    orderFilter = e.target.value;
+    renderOrders();
+  });
 }
 
-function renderSettings() {
-    const appContent = document.getElementById('app-content');
-    appContent.innerHTML = `
-        <h2 class="text-3xl font-bold mb-8">Paramètres</h2>
-        
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-            <div class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700">
-                <div class="flex items-center gap-4 mb-6">
-                    <img src="https://ui-avatars.com/api/?name=Admin+Foodiez&background=f97316&color=fff" alt="Profile" class="w-16 h-16 rounded-full shadow-md">
-                    <div>
-                        <h3 class="text-xl font-bold">Admin Foodiez</h3>
-                        <p class="text-gray-500">Manager du Restaurant</p>
-                    </div>
-                </div>
-                <div class="space-y-3 text-sm text-gray-600 dark:text-gray-300">
-                    <p><i class="fas fa-envelope mr-2"></i> admin@foodiez.com</p>
-                    <p><i class="fas fa-map-marker-alt mr-2"></i> Rabat, Maroc</p>
-                </div>
+function renderMenu() {
+  const app = document.getElementById("app");
+
+  app.innerHTML = `
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div class="lg:col-span-1">
+        <div class="bg-white p-6 rounded-lg shadow-md sticky top-6">
+          <h3 class="text-lg font-bold text-gray-800 mb-4">Ajouter un produit</h3>
+          <form id="add-product-form" class="space-y-4">
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">Nom</label>
+              <input type="text" id="product-name" required class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500" placeholder="Nom du plat">
             </div>
-
-            <div class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 space-y-6">
-                <div>
-                    <h3 class="text-lg font-bold mb-3 border-b border-gray-100 dark:border-gray-700 pb-2">Apparence</h3>
-                    <div class="flex justify-between items-center">
-                        <span class="font-medium">Mode Sombre (Dark Mode)</span>
-                        <button onclick="toggleTheme()" class="relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${isDarkMode ? 'bg-orange-500' : 'bg-gray-300 dark:bg-gray-600'}">
-                            <span class="inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${isDarkMode ? 'translate-x-6' : 'translate-x-1'}"></span>
-                        </button>
-                    </div>
-                </div>
-
-                <div>
-                    <h3 class="text-lg font-bold text-red-500 mb-3 border-b border-gray-100 dark:border-gray-700 pb-2">Zone Dangereuse</h3>
-                    <p class="text-sm text-gray-500 mb-3">Attention, cette action supprimera toutes les commandes de la base de données. Irréversible.</p>
-                    <button onclick="resetAllOrders()" class="bg-red-50 text-red-600 dark:bg-red-900/20 dark:text-red-400 border border-red-200 dark:border-red-800 px-4 py-2 rounded-lg font-medium hover:bg-red-100 dark:hover:bg-red-900/40 transition">
-                        <i class="fas fa-trash-alt mr-2"></i> Réinitialiser la base de données
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">Prix (DH)</label>
+              <input type="number" id="product-price" min="1" required class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500" placeholder="Prix en DH">
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">Image (URL)</label>
+              <input type="url" id="product-image" placeholder="https://..." class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500">
+            </div>
+            <button type="submit" class="w-full bg-orange-500 hover:bg-orange-600 text-white font-medium py-2 rounded-lg transition">
+              <i class="fas fa-plus mr-2"></i>Ajouter
+            </button>
+          </form>
+        </div>
+      </div>
+      <div class="lg:col-span-2">
+        <div class="bg-white p-6 rounded-lg shadow-md">
+          <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-4">
+            <div>
+              <h3 class="text-lg font-bold text-gray-800">Produits (${products.length})</h3>
+              <p class="text-sm text-gray-500">Catalogue visuel de votre menu.</p>
+            </div>
+          </div>
+          ${
+            products.length > 0
+              ? `
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              ${products
+                .map(
+                  (product) => `
+                <div class="border border-gray-200 rounded-lg overflow-hidden hover:shadow-lg transition">
+                  <img src="${product.image || `https://source.unsplash.com/400x300/?food&sig=${product.id}`}" alt="${product.name}" class="w-full h-40 object-cover rounded-t-lg">
+                  <div class="p-4">
+                    <h4 class="font-bold text-gray-800">${product.name}</h4>
+                    <p class="text-orange-500 font-semibold mt-2">${formatCurrency(product.price)}</p>
+                    <button onclick="deleteProduct(${product.id})" class="w-full mt-4 bg-red-100 text-red-600 hover:bg-red-200 font-medium py-2 rounded transition flex items-center justify-center gap-2 text-sm">
+                      <i class="fas fa-trash"></i>Supprimer
                     </button>
+                  </div>
                 </div>
+              `,
+                )
+                .join("")}
             </div>
+          `
+              : '<p class="text-gray-500 text-center py-8">Aucun produit</p>'
+          }
         </div>
-    `;
+      </div>
+    </div>
+  `;
+
+  document
+    .getElementById("add-product-form")
+    .addEventListener("submit", handleAddProduct);
 }
 
-// ==========================================
-// 4. LOGIQUE API & CRUD
-// ==========================================
+// ========== STATS PAGE ==========
+function renderStats() {
+  const app = document.getElementById("app");
+  const totalOrders = orders.length;
+  const totalRevenue = orders.reduce((sum, o) => sum + (o.total || 0), 0);
+  const avgRevenue =
+    totalOrders > 0 ? Math.round(totalRevenue / totalOrders) : 0;
+  const deliveredCount = orders.filter((o) => o.status === "delivered").length;
+  const cancelledCount = orders.filter((o) => o.status === "cancelled").length;
+  const pendingCount = orders.filter((o) => o.status === "pending").length;
 
-async function fetchOrders() {
-    toggleLoader(true);
-    try {
-        const res = await fetch(API_URL);
-        if (!res.ok) throw new Error();
-        orders = await res.json();
-        navigate(currentView); // Affiche la vue courante une fois les données chargées
-    } catch (err) {
-        showToast("Erreur de chargement JSON Server", "error");
-    } finally {
-        toggleLoader(false);
-    }
-}
+  app.innerHTML = `
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
+      <div class="bg-white p-6 rounded-lg shadow-md">
+        <p class="text-gray-600 text-sm">Total commandes</p>
+        <p class="text-3xl font-bold text-gray-800 mt-2">${totalOrders}</p>
+      </div>
+      <div class="bg-white p-6 rounded-lg shadow-md">
+        <p class="text-gray-600 text-sm">Revenus totaux</p>
+        <p class="text-3xl font-bold text-green-600 mt-2">${formatCurrency(totalRevenue)}</p>
+      </div>
+      <div class="bg-white p-6 rounded-lg shadow-md">
+        <p class="text-gray-600 text-sm">Revenu moyen</p>
+        <p class="text-3xl font-bold text-blue-600 mt-2">${formatCurrency(avgRevenue)}</p>
+      </div>
+      <div class="bg-white p-6 rounded-lg shadow-md">
+        <p class="text-gray-600 text-sm">Produits</p>
+        <p class="text-3xl font-bold text-purple-600 mt-2">${products.length}</p>
+      </div>
+    </div>
 
-async function handleAddOrder(e) {
-    e.preventDefault(); // Stoppe le rechargement
-    const newOrder = {
-        client: document.getElementById('input-client').value.trim(),
-        meal: document.getElementById('input-meal').value.trim(),
-        price: Number(document.getElementById('input-price').value),
-        status: "pending"
-    };
-
-    try {
-        const res = await fetch(API_URL, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(newOrder)
-        });
-        if (res.ok) {
-            showToast("Commande ajoutée !", "success");
-            fetchOrders(); // Recharge les données et l'UI
-        }
-    } catch (err) { showToast("Erreur d'ajout", "error"); }
-}
-
-async function updateOrder(id, newStatus) {
-    try {
-        const res = await fetch(`${API_URL}/${id}`, {
-            method: 'PATCH',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ status: newStatus })
-        });
-        if (res.ok) {
-            showToast(`Statut changé en: ${newStatus}`, "success");
-            fetchOrders();
-        }
-    } catch (err) { showToast("Erreur de mise à jour", "error"); }
-}
-
-async function deleteOrder(id) {
-    if (!confirm("Supprimer définitivement cette commande ?")) return;
-    try {
-        const res = await fetch(`${API_URL}/${id}`, { method: 'DELETE' });
-        if (res.ok) {
-            showToast("Commande supprimée", "success");
-            fetchOrders();
-        }
-    } catch (err) { showToast("Erreur de suppression", "error"); }
-}
-
-// ==========================================
-// 5. FONCTIONS UTILITAIRES & UI HELPERS
-// ==========================================
-
-function setFilter(status) {
-    currentFilter = status;
-    localStorage.setItem('foodiez_filter', status);
-    renderOrders(); // Re-rend uniquement la vue actuelle sans appel réseau
-}
-
-function toggleTheme() {
-    isDarkMode = !isDarkMode;
-    localStorage.setItem('foodiez_theme', isDarkMode ? 'dark' : 'light');
-    applyTheme();
-    if (currentView === 'settings') renderSettings(); // Met à jour le toggle visuel
-}
-
-function applyTheme() {
-    if (isDarkMode) {
-        document.documentElement.classList.add('dark');
-    } else {
-        document.documentElement.classList.remove('dark');
-    }
-}
-
-function toggleLoader(show) {
-    const loader = document.getElementById('global-loader');
-    show ? loader.classList.remove('hidden') : loader.classList.add('hidden');
-}
-
-function showToast(msg, type = "success") {
-    const container = document.getElementById('toast-container');
-    const toast = document.createElement('div');
-    const color = type === "success" ? "bg-green-500" : "bg-red-500";
-    const icon = type === "success" ? "fa-check" : "fa-exclamation-triangle";
-    
-    toast.className = `${color} text-white px-5 py-3 rounded-lg shadow-lg flex items-center gap-3 transform translate-y-10 opacity-0 transition-all duration-300 z-50`;
-    toast.innerHTML = `<i class="fas ${icon}"></i> <span class="font-medium">${msg}</span>`;
-    
-    container.appendChild(toast);
-    setTimeout(() => toast.classList.remove('translate-y-10', 'opacity-0'), 10);
-    setTimeout(() => {
-        toast.classList.add('opacity-0');
-        setTimeout(() => toast.remove(), 300);
-    }, 3000);
-}
-
-/**
- * Génère le code HTML d'une carte commande
- */
-function generateOrderCard(order) {
-    const colors = {
-        pending: 'border-yellow-500',
-        accepted: 'border-blue-500',
-        completed: 'border-green-500',
-        rejected: 'border-red-500'
-    };
-
-    return `
-        <div class="bg-white dark:bg-gray-800 p-5 rounded-xl shadow-sm border-l-4 ${colors[order.status]} hover:shadow-md transition">
-            <div class="flex justify-between items-start mb-2">
-                <div>
-                    <h3 class="font-bold text-lg text-gray-800 dark:text-white">${order.client}</h3>
-                    <p class="text-sm text-gray-500 dark:text-gray-400"><i class="fas fa-utensils mr-1"></i> ${order.meal}</p>
-                </div>
-                <span class="font-bold text-lg text-orange-500">${order.price} DH</span>
-            </div>
-            
-            <div class="mt-4 pt-4 border-t border-gray-50 dark:border-gray-700 flex justify-between items-center">
-                <div class="flex gap-2">
-                    ${generateActionButtons(order)}
-                </div>
-                <button onclick="deleteOrder('${order.id}')" class="text-gray-400 hover:text-red-500 transition w-8 h-8 flex items-center justify-center rounded-full hover:bg-red-50 dark:hover:bg-red-900/20">
-                    <i class="fas fa-trash"></i>
-                </button>
-            </div>
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div class="bg-white p-6 rounded-lg shadow-md">
+        <h3 class="font-bold text-gray-800 mb-4">Statistiques</h3>
+        <div class="space-y-3">
+          <div class="flex justify-between items-center">
+            <span class="text-gray-600">En attente</span>
+            <span class="text-yellow-600 font-bold">${pendingCount}</span>
+          </div>
+          <div class="flex justify-between items-center">
+            <span class="text-gray-600">Livrées</span>
+            <span class="text-green-600 font-bold">${deliveredCount}</span>
+          </div>
+          <div class="flex justify-between items-center">
+            <span class="text-gray-600">Annulées</span>
+            <span class="text-red-600 font-bold">${cancelledCount}</span>
+          </div>
         </div>
-    `;
+      </div>
+      <div class="bg-white p-6 rounded-lg shadow-md lg:col-span-2">
+        <h3 class="font-bold text-gray-800 mb-4">Taux de livraison</h3>
+        <div class="space-y-4">
+          ${renderProgressBar("Livrées", deliveredCount, totalOrders, "bg-green-500")}
+          ${renderProgressBar("En attente", pendingCount, totalOrders, "bg-yellow-500")}
+          ${renderProgressBar("Annulées", cancelledCount, totalOrders, "bg-red-500")}
+        </div>
+      </div>
+    </div>
+  `;
 }
 
-function generateActionButtons(order) {
-    if (order.status === 'pending') {
-        return `
-            <button onclick="updateOrder('${order.id}', 'accepted')" class="text-xs font-medium bg-blue-50 text-blue-600 dark:bg-blue-900/20 dark:text-blue-400 px-3 py-1.5 rounded-lg hover:bg-blue-100 transition">Accepter</button>
-            <button onclick="updateOrder('${order.id}', 'rejected')" class="text-xs font-medium bg-red-50 text-red-600 dark:bg-red-900/20 dark:text-red-400 px-3 py-1.5 rounded-lg hover:bg-red-100 transition">Rejeter</button>
-        `;
-    } else if (order.status === 'accepted') {
-        return `<button onclick="updateOrder('${order.id}', 'completed')" class="text-xs font-medium bg-green-50 text-green-600 dark:bg-green-900/20 dark:text-green-400 px-3 py-1.5 rounded-lg hover:bg-green-100 transition"><i class="fas fa-check mr-1"></i> Terminer</button>`;
-    }
-    
-    // Badge status for completed/rejected
-    const bg = order.status === 'completed' ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400' : 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400';
-    const text = order.status === 'completed' ? 'Terminée' : 'Rejetée';
-    return `<span class="${bg} px-3 py-1 rounded-lg text-xs font-medium">${text}</span>`;
+function renderProgressBar(label, value, total, color) {
+  const percent = total > 0 ? Math.round((value / total) * 100) : 0;
+  return `
+    <div>
+      <div class="flex justify-between mb-1">
+        <span class="text-sm font-medium text-gray-700">${label}</span>
+        <span class="text-sm font-bold text-gray-800">${percent}%</span>
+      </div>
+      <div class="w-full bg-gray-200 rounded-full h-2">
+        <div class="${color} h-2 rounded-full transition-all" style="width: ${percent}%"></div>
+      </div>
+    </div>
+  `;
 }
 
-// Fonction Bonus : Fake chart data
-function generateFakeChartBars() {
-    return Array.from({length: 12}).map(() => {
-        const height = Math.floor(Math.random() * 80) + 20;
-        return `<div class="flex-1 bg-orange-200 dark:bg-orange-500/30 rounded-t-sm hover:bg-orange-500 dark:hover:bg-orange-500 transition-colors cursor-pointer" style="height: ${height}%"></div>`;
-    }).join('');
+function getStatusBadge(status) {
+  const badges = {
+    pending: "bg-yellow-100 text-yellow-600",
+    delivered: "bg-green-100 text-green-600",
+    cancelled: "bg-red-100 text-red-600",
+  };
+  return badges[status] || "bg-gray-100 text-gray-600";
 }
 
-// Fonction Bonus : Reset DB
-async function resetAllOrders() {
-    if(!confirm("Êtes-vous absolument sûr ?")) return;
-    
-    toggleLoader(true);
-    // JSON Server ne permet pas de DELETE all d'un coup, on boucle (version simplifiée pour l'exercice)
-    try {
-        for (const order of orders) {
-            await fetch(`${API_URL}/${order.id}`, { method: 'DELETE' });
-        }
-        showToast("Base de données réinitialisée", "success");
-        fetchOrders();
-    } catch(e) {
-        showToast("Erreur lors de la réinitialisation", "error");
-        toggleLoader(false);
-    }
+function formatCurrency(value) {
+  return `${value.toLocaleString("fr-FR")} DH`;
 }
