@@ -286,6 +286,13 @@ function renderOrders() {
     </div>
   `;
 
+  const input = document.getElementById('order-search');
+
+if (input) {
+  input.value = orderSearch;
+  input.focus();
+}
+
   document.getElementById('add-order-form').addEventListener('submit', handleAddOrder);
   document.getElementById('order-search').addEventListener('input', e => {
     orderSearch = e.target.value;
