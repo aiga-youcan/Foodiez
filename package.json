@@ -7,7 +7,12 @@
     "server": "json-server --watch db.json --port 3000",
     "start": "npm run server"
   },
-  "keywords": ["spa", "json-server", "admin", "dashboard"],
+  "keywords": [
+    "spa",
+    "json-server",
+    "admin",
+    "dashboard"
+  ],
   "author": "",
   "license": "MIT",
   "devDependencies": {
