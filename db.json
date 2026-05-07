@@ -115,30 +115,30 @@
       "id": "1",
       "name": "Burger Classic",
       "price": 55,
-      "image": "Burger Classic.png"
+      "image": "./images/Burger Classic.png"
     },
     {
       "id": "2",
       "name": "Pizza Margherita",
       "price": 75,
-      "image": "Pizza Margherita.jpg"
+      "image": "./images/Pizza Margherita.jpg"
     },
     {
       "id": "3",
       "name": "Salade Fraîche",
       "price": 40,
-      "image": "Salade Fraîche.jpg"
+      "image": "./images/Salade Fraîche.jpg"
     },
     {
       "id": "4",
       "name": "Wrap Poulet",
       "price": 45,
-      "image": "Wrap Poulet.jpg"
+      "image": "./images/Wrap Poulet.jpg"
     },
     {
       "name": "Sushi Amemura",
       "price": 220,
-      "image": "https://www.thedailymeal.com/img/gallery/the-complete-list-of-sushi-rolls-ranked/l-intro-1666963587.jpg",
+      "image": "./images/Sushi Amemura.jpg",
       "id": "MtVxM3vkjUA"
     }
   ],
