@@ -1,1 +1,94 @@
-Accept Incoming Change
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Foodiez Admin - Dashboard</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="shortcut icon" href="icon logo.png" type="image/png">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-s4Yj2Z5pIH9JxQbpWRnOY6Z4nJ0GCHaRk1WTtF1x4eg6xPr7I/SgV2Iqzv6CJ7XA+jdPSdAKc+D6XkPq7X4BWg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <style>
+    @keyframes slideIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .fade-in { animation: slideIn 0.3s ease-out; }
+    .btn-active {
+      background-color: #f97316;
+      color: white;
+      box-shadow: 0 10px 15px -3px rgba(249, 115, 22, 0.3), 0 4px 6px -4px rgba(249, 115, 22, 0.4);
+    }
+  </style>
+</head>
+<body class="bg-gray-100 text-gray-800">
+  <div class="flex h-screen">
+  <!-- SIDEBAR -->
+  <aside class="w-64 bg-white shadow-lg border-r border-gray-200">
+    
+    <!-- LOGO -->
+    <div class="p-6 border-b border-gray-200">
+      
+      <!-- clickable logo -->
+      <a href="" onclick="location.reload()" class="flex items-center gap-3 group">
+        
+        <!-- image logo -->
+        <img 
+          src="logo.png" 
+          alt="Foodiez Logo" 
+          class="w-12 h-12 object-cover rounded-xl shadow-md group-hover:scale-105 transition"
+        />
+
+        <!-- text -->
+        <div>
+          <h1 class="text-lg font-bold text-gray-800 group-hover:text-orange-500 transition">
+            Foodiez
+          </h1>
+          <p class="text-xs text-gray-500">Admin Panel</p>
+        </div>
+
+      </a>
+
+    </div>
+
+      <!-- NAV MENU -->
+      <nav class="p-4 space-y-1">
+        <button data-page="dashboard" class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-lg text-gray-700 hover:bg-orange-50 transition font-medium">
+          <i class="fas fa-chart-pie w-5 text-orange-500"></i> Dashboard
+        </button>
+        <button data-page="orders" class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-lg text-gray-700 hover:bg-orange-50 transition font-medium">
+          <i class="fas fa-receipt w-5 text-orange-500"></i> Orders
+        </button>
+        <button data-page="menu" class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-lg text-gray-700 hover:bg-orange-50 transition font-medium">
+          <i class="fas fa-utensils w-5 text-orange-500"></i> Menu
+        </button>
+        <button data-page="stats" class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-lg text-gray-700 hover:bg-orange-50 transition font-medium">
+          <i class="fas fa-chart-bar w-5 text-orange-500"></i> Stats
+        </button>
+      </nav>
+    </aside>
+
+    <!-- MAIN -->
+    <main class="flex-1 overflow-auto flex flex-col">
+      <!-- HEADER -->
+      <header class="bg-white shadow-sm border-b border-gray-200">
+        <div class="p-6">
+          <h2 id="page-title" class="text-2xl font-bold text-gray-800">Dashboard</h2>
+          <p id="page-desc" class="text-sm text-gray-500 mt-1">Gérez votre restaurant en temps réel</p>
+        </div>
+      </header>
+
+      <!-- CONTENT -->
+      <div id="app" class="p-6 flex-1 overflow-auto fade-in space-y-6">
+        <!-- Rendu ici -->
+      </div>
+    </main>
+  </div>
+
+  <!-- TOASTS -->
+  <div id="toast-container" class="fixed bottom-5 right-5 space-y-3 z-50"></div>
+
+  <script src="script.js"></script>
+</body>
+</html>

@@ -1,16 +1,5 @@
+
 {
-<<<<<<< HEAD
-  "orders": [
-    {
-      "id": "2",
-      "customerName": "Laila",
-      "items": [
-        "Pasta",
-        "Salade"
-      ],
-      "total": 95,
-      "status": "delivered",
-=======
 "orders": [ {
       "id": "1",
       "customerName": "Yassine El Amrani",
@@ -25,43 +14,10 @@
       "items": ["Pasta", "Salade"],
       "total": 95,
       "status": "cancelled",
->>>>>>> 7ae020f4d975c58595e84fccb5f19331341d80c3
       "createdAt": "2026-05-02"
     },
     {
       "id": "3",
-<<<<<<< HEAD
-      "customerName": "Omar",
-      "items": [
-        "Pizza",
-        "Soda"
-      ],
-      "total": 110,
-      "status": "cancelled",
-      "createdAt": "2026-05-03"
-    },
-    {
-      "customerName": "tesr",
-      "items": [
-        "piza"
-      ],
-      "total": 11,
-      "status": "pending",
-      "createdAt": "2026-05-05",
-      "id": "whCkvMy5NAA"
-    },
-    {
-      "customerName": "tesr",
-      "items": [
-        "piza"
-      ],
-      "total": 11,
-      "status": "pending",
-      "createdAt": "2026-05-05",
-      "id": "5ai-E-zxo2Y"
-    }
-  ],
-=======
       "customerName": "Karim Alaoui",
       "items": ["Tacos", "Frites"],
       "total": 75,
@@ -126,45 +82,29 @@
     }
 ],
 
->>>>>>> 7ae020f4d975c58595e84fccb5f19331341d80c3
   "products": [
     {
       "id": "1",
       "name": "Burger Classic",
       "price": 55,
-<<<<<<< HEAD
-      "image": "https://source.unsplash.com/400x300/?burger&sig=1"
-=======
       "image": "Burger Classic.png"
->>>>>>> 7ae020f4d975c58595e84fccb5f19331341d80c3
     },
     {
       "id": "2",
       "name": "Pizza Margherita",
       "price": 75,
-<<<<<<< HEAD
-      "image": "https://source.unsplash.com/400x300/?pizza&sig=2"
-=======
       "image": "Pizza Margherita.jpg"
->>>>>>> 7ae020f4d975c58595e84fccb5f19331341d80c3
     },
     {
       "id": "3",
       "name": "Salade Fraîche",
       "price": 40,
-<<<<<<< HEAD
-      "image": "https://source.unsplash.com/400x300/?salad&sig=3"
-=======
       "image": "Salade Fraîche.jpg"
->>>>>>> 7ae020f4d975c58595e84fccb5f19331341d80c3
     },
     {
       "id": "4",
       "name": "Wrap Poulet",
       "price": 45,
-<<<<<<< HEAD
-      "image": "https://source.unsplash.com/400x300/?wrap&sig=4"
-=======
       "image": "Wrap Poulet.jpg"
     },
     {
@@ -172,7 +112,6 @@
       "price": 220,
       "image": "https://www.thedailymeal.com/img/gallery/the-complete-list-of-sushi-rolls-ranked/l-intro-1666963587.jpg",
       "id": "MtVxM3vkjUA"
->>>>>>> 7ae020f4d975c58595e84fccb5f19331341d80c3
     }
   ],
   "$schema": "./node_modules/json-server/schema.json"
