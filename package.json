@@ -1,0 +1,16 @@
+{
+  "name": "foodiez-admin",
+  "version": "1.0.0",
+  "description": "Foodiez Admin Dashboard - SPA with JSON Server",
+  "main": "index.html",
+  "scripts": {
+    "server": "json-server --watch db.json --port 3000",
+    "start": "npm run server"
+  },
+  "keywords": ["spa", "json-server", "admin", "dashboard"],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "json-server": "^0.17.4"
+  }
+}
