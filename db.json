@@ -1,0 +1,156 @@
+{
+  "orders": [
+    {
+      "id": "1",
+      "customerName": "Yassine El Amrani",
+      "items": [
+        "Burger",
+        "Pizza"
+      ],
+      "total": 120,
+      "status": "delivered",
+      "createdAt": "2026-05-01"
+    },
+    {
+      "id": "2",
+      "customerName": "Laila Bennani",
+      "items": [
+        "Pasta",
+        "Salade"
+      ],
+      "total": 95,
+      "status": "cancelled",
+      "createdAt": "2026-05-02"
+    },
+    {
+      "id": "3",
+      "customerName": "Karim Alaoui",
+      "items": [
+        "Tacos",
+        "Frites"
+      ],
+      "total": 75,
+      "status": "delivered",
+      "createdAt": "2026-05-03"
+    },
+    {
+      "id": "4",
+      "customerName": "Sara Chraibi",
+      "items": [
+        "Panini"
+      ],
+      "total": 40,
+      "status": "pending",
+      "createdAt": "2026-05-03"
+    },
+    {
+      "id": "5",
+      "customerName": "Omar Tazi",
+      "items": [
+        "Couscous",
+        "Jus"
+      ],
+      "total": 85,
+      "status": "delivered",
+      "createdAt": "2026-05-04"
+    },
+    {
+      "id": "6",
+      "customerName": "Nadia El Idrissi",
+      "items": [
+        "Pizza",
+        "Soda"
+      ],
+      "total": 130,
+      "status": "cancelled",
+      "createdAt": "2026-05-04"
+    },
+    {
+      "id": "7",
+      "customerName": "Hamza Berrada",
+      "items": [
+        "Burger",
+        "Ice Cream"
+      ],
+      "total": 90,
+      "status": "pending",
+      "createdAt": "2026-05-05"
+    },
+    {
+      "id": "8",
+      "customerName": "Salma Ait Lahcen",
+      "items": [
+        "Sushi",
+        "Soup"
+      ],
+      "total": 150,
+      "status": "pending",
+      "createdAt": "2026-05-05"
+    },
+    {
+      "id": "9",
+      "customerName": "Mehdi Ouazzani",
+      "items": [
+        "Pasta",
+        "Tiramisu"
+      ],
+      "total": 115,
+      "status": "delivered",
+      "createdAt": "2026-05-06"
+    },
+    {
+      "id": "10",
+      "customerName": "Imane Saidi",
+      "items": [
+        "Salade",
+        "Juice"
+      ],
+      "total": 60,
+      "status": "delivered",
+      "createdAt": "2026-05-07"
+    },
+    {
+      "customerName": "fati",
+      "items": [
+        "pizza"
+      ],
+      "total": 20,
+      "status": "pending",
+      "createdAt": "2026-05-08",
+      "id": "0dm0fN9rM6Y"
+    }
+  ],
+  "products": [
+    {
+      "id": "1",
+      "name": "Burger Classic",
+      "price": 55,
+      "image": "./images/Burger Classic.png"
+    },
+    {
+      "id": "2",
+      "name": "Pizza Margherita",
+      "price": 75,
+      "image": "./images/Pizza Margherita.jpg"
+    },
+    {
+      "id": "3",
+      "name": "Salade Fraîche",
+      "price": 40,
+      "image": "./images/Salade Fraîche.jpg"
+    },
+    {
+      "id": "4",
+      "name": "Wrap Poulet",
+      "price": 45,
+      "image": "./images/Wrap Poulet.jpg"
+    },
+    {
+      "name": "Sushi Amemura",
+      "price": 220,
+      "image": "./images/Sushi Amemura.jpg",
+      "id": "MtVxM3vkjUA"
+    }
+  ],
+  "$schema": "./node_modules/json-server/schema.json"
+}
