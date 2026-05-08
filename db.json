@@ -3,7 +3,10 @@
     {
       "id": "1",
       "customerName": "Yassine El Amrani",
-      "items": ["Burger", "Pizza"],
+      "items": [
+        "Burger",
+        "Pizza"
+      ],
       "total": 120,
       "status": "delivered",
       "createdAt": "2026-05-01"
@@ -11,7 +14,10 @@
     {
       "id": "2",
       "customerName": "Laila Bennani",
-      "items": ["Pasta", "Salade"],
+      "items": [
+        "Pasta",
+        "Salade"
+      ],
       "total": 95,
       "status": "cancelled",
       "createdAt": "2026-05-02"
@@ -19,7 +25,10 @@
     {
       "id": "3",
       "customerName": "Karim Alaoui",
-      "items": ["Tacos", "Frites"],
+      "items": [
+        "Tacos",
+        "Frites"
+      ],
       "total": 75,
       "status": "delivered",
       "createdAt": "2026-05-03"
@@ -27,7 +36,9 @@
     {
       "id": "4",
       "customerName": "Sara Chraibi",
-      "items": ["Panini"],
+      "items": [
+        "Panini"
+      ],
       "total": 40,
       "status": "pending",
       "createdAt": "2026-05-03"
@@ -35,7 +46,10 @@
     {
       "id": "5",
       "customerName": "Omar Tazi",
-      "items": ["Couscous", "Jus"],
+      "items": [
+        "Couscous",
+        "Jus"
+      ],
       "total": 85,
       "status": "delivered",
       "createdAt": "2026-05-04"
@@ -43,7 +57,10 @@
     {
       "id": "6",
       "customerName": "Nadia El Idrissi",
-      "items": ["Pizza", "Soda"],
+      "items": [
+        "Pizza",
+        "Soda"
+      ],
       "total": 130,
       "status": "cancelled",
       "createdAt": "2026-05-04"
@@ -51,7 +68,10 @@
     {
       "id": "7",
       "customerName": "Hamza Berrada",
-      "items": ["Burger", "Ice Cream"],
+      "items": [
+        "Burger",
+        "Ice Cream"
+      ],
       "total": 90,
       "status": "pending",
       "createdAt": "2026-05-05"
@@ -59,7 +79,10 @@
     {
       "id": "8",
       "customerName": "Salma Ait Lahcen",
-      "items": ["Sushi", "Soup"],
+      "items": [
+        "Sushi",
+        "Soup"
+      ],
       "total": 150,
       "status": "pending",
       "createdAt": "2026-05-05"
@@ -67,7 +90,10 @@
     {
       "id": "9",
       "customerName": "Mehdi Ouazzani",
-      "items": ["Pasta", "Tiramisu"],
+      "items": [
+        "Pasta",
+        "Tiramisu"
+      ],
       "total": 115,
       "status": "delivered",
       "createdAt": "2026-05-06"
@@ -75,10 +101,23 @@
     {
       "id": "10",
       "customerName": "Imane Saidi",
-      "items": ["Salade", "Juice"],
+      "items": [
+        "Salade",
+        "Juice"
+      ],
       "total": 60,
       "status": "delivered",
       "createdAt": "2026-05-07"
+    },
+    {
+      "customerName": "hanan",
+      "items": [
+        "pizza"
+      ],
+      "total": 30,
+      "status": "pending",
+      "createdAt": "2026-05-08",
+      "id": "WaGyzC5XuKg"
     }
   ],
   "products": [
