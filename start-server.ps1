@@ -1,3 +1,4 @@
+//
 Write-Host "Demarrage du serveur JSON..." -ForegroundColor Green
 Set-Location $PSScriptRoot
 npm run server
